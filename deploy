@@ -4,8 +4,17 @@ PRJ=nullpointer
 HOST_PORT=80
 CONTAINER_PORT=80
 
+# build it
 docker build -t $PRJ .
+
+# swap names so we can remove later
 docker rename "$PRJ" "$PRJ-1"
+
+# stop running image to free up port
 docker stop "$PRJ-1"
+
+# start our fresh image
 docker run -d -p $HOST_PORT:$CONTAINER_PORT --name="$PRJ" $PRJ
+
+# remove the old image
 docker rm "$PRJ-1"
